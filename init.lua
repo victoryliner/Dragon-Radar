@@ -1,5 +1,5 @@
 --[[
-
+DRyWDXZwjRzxIPjrFkkJkemihVzBRmRT
 ALCHEMY HUB NETA EDITION SCRIPT
 
 This made by Alchemy Team ( io.Luable / Alchemy Hub )
