@@ -12,18 +12,6 @@ Copyright © 2025 Alchemy Hub - Script. All Rights Reserved.
 
 -- 84221975933832 logo ( NETA )
 __f = {
-    ['__game'] = function()
-        local g = game.GameId
-        if g == 994732206 then return "v3/loaders/311ad7329b80c2117f4bdbf46582dcc6.lua" -- Blox Fruits
-        elseif g == 5750914919 then return "v3/loaders/40142043704f8ec418b59eddd1cb1949.lua" -- Fisch
-        elseif g == 6325068386 then return "v3/loaders/4171685ce597cf71185c038656d405ca.lua" -- Bluelock Rivals
-        elseif g == 6931042565 then return "v3/loaders/abbbbec4c052ea223f09c7e819748161.lua" -- Volleyball Legends
-        elseif g == 6906326545 then return "v3/loaders/34a7bfd841e02f5b30b75712e5da67ae.lua" -- Basketball Showdown
-        else
-            game:GetService("Players").LocalPlayer:Kick("\n⚠️ This game is discontinued or not support ⚠️")
-            return "."
-        end
-    end;
     ['__premium'] = function()
         local g = game.GameId
         if g == 994732206 then return "v3/loaders/a1a6b1634179469cd1b8f22b2a32492d.lua" -- Blox Fruits
@@ -32,30 +20,77 @@ __f = {
         elseif g == 6931042565 then return "v3/loaders/2a04962aae55b8e5d6626f949470c40a.lua" -- Volleyball Legends
         elseif g == 6906326545 then return "v3/loaders/f7d7cd2ec55759828c1e25f6feebe028.lua" -- Basketball Showdown
         else
-            game:GetService("Players").LocalPlayer:Kick("\n⚠️ This game is discontinued or not support ⚠️")
+            game:GetService("Players").LocalPlayer:Kick("\n⚠️ This game is discontinued or not supported ⚠️")
             return "."
         end
     end;
-    ['__script'] = function(m) return "https://raw.githubusercontent.com/ZoiIntra/__Script/main/__Alchemy/__"..m..".lua" end;
     ['__load'] = function(s) loadstring(game:HttpGet(s))() end;
-    ['__ismobile'] = function()
-        local uis = game:GetService("UserInputService")
-        return uis.TouchEnabled and not uis.KeyboardEnabled and not uis.MouseEnabled
-    end;
-    ['__executor'] = tostring(identifyexecutor())
 }
 
-_G.Premium = true -- Forces premium mode
-tar = __f['__premium']()
-__f['__load']("https://api.luarmor.net/files/"..tar) -- Always loads premium script
+-- Force Premium Mode
+_G.Premium = true
+
+-- Prompt for Key Input
+local function requestKey()
+    local UI = Instance.new("ScreenGui")
+    local Frame = Instance.new("Frame")
+    local TextBox = Instance.new("TextBox")
+    local Submit = Instance.new("TextButton")
+
+    UI.Parent = game.CoreGui
+    Frame.Parent = UI
+    Frame.Size = UDim2.new(0, 300, 0, 150)
+    Frame.Position = UDim2.new(0.5, -150, 0.5, -75)
+    Frame.BackgroundColor3 = Color3.new(0, 0, 0)
+    Frame.BorderSizePixel = 2
+
+    TextBox.Parent = Frame
+    TextBox.Size = UDim2.new(0.8, 0, 0.4, 0)
+    TextBox.Position = UDim2.new(0.1, 0, 0.2, 0)
+    TextBox.PlaceholderText = "Enter your key here"
+    TextBox.BackgroundColor3 = Color3.new(1, 1, 1)
+    TextBox.TextColor3 = Color3.new(0, 0, 0)
+
+    Submit.Parent = Frame
+    Submit.Size = UDim2.new(0.8, 0, 0.3, 0)
+    Submit.Position = UDim2.new(0.1, 0, 0.7, 0)
+    Submit.Text = "Submit"
+    Submit.BackgroundColor3 = Color3.new(0, 1, 0)
+
+    local key = nil
+
+    Submit.MouseButton1Click:Connect(function()
+        key = TextBox.Text
+        UI:Destroy()
+    end)
+
+    repeat wait() until key
+
+    return key
+end
+
+-- Validate Key
+local function validateKey(userKey)
+    local validKeys = {
+        "PREMIUM123",
+        "VIP-ACCESS",
+        "GOLDEN-TICKET"
+    }
+    for _, v in pairs(validKeys) do
+        if v == userKey then return true end
+    end
+    return false
+end
+
+-- Run Key Check
+local enteredKey = requestKey()
+
+if validateKey(enteredKey) then
+    print("✅ Valid Key! Loading Premium Script...")
+    tar = __f['__premium']()
+    __f['__load']("https://api.luarmor.net/files/"..tar) -- Load Premium Version
+else
+    game:GetService("Players").LocalPlayer:Kick("\n❌ Invalid Key! Please enter a valid premium key.")
+end
 
 _G.run_time = true
-spawn(function()
-    pcall(function()
-        game:GetService("Players").LocalPlayer.Idled:connect(function()
-            game:GetService("VirtualUser"):Button2Down(Vector2.new(0,0), workspace.CurrentCamera.CFrame)
-            wait(1)
-            game:GetService("VirtualUser"):Button2Up(Vector2.new(0,0), workspace.CurrentCamera.CFrame)
-        end)
-    end)
-end)
