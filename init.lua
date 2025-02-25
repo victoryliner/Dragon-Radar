@@ -7,7 +7,7 @@ Modification of the script, including attempting to bypass
 or crack the script for any reason is not allowed.
 
 Copyright © 2025 Alchemy Hub - Script. All Rights Reserved.
-
+]]--
 --84221975933832 logo ( NETA )
 __f = {
     -- NON-PREMIUM function now returns PREMIUM links:
